@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import VinyleForm from './VinyleForm';
+import Animation from './Animation';
 
 const Flexbutton = styled.div`
   text-align: center;
