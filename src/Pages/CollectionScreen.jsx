@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import VinyleForm from './VinyleForm';
-import Animation from './Animation';
+import Animation from './Animation'
 
 const Flexbutton = styled.div`
   text-align: center;
@@ -65,6 +65,7 @@ function CollectionScreen() {
 
   return (
     <>
+
       <Flexbutton showVinyleForm={showVinyleForm}>
         {!showVinyleForm && (
           <a href="#" className="btn btn-primary btn-lg active" role="button" aria-pressed="true" onClick={() => setShowVinyleForm(true)}>Add a New Vinyl Form</a>

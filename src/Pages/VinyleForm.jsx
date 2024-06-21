@@ -3,9 +3,9 @@ import styled, { keyframes } from 'styled-components';
 import CD from '../asset/cd.png';
 
 const Container = styled.div`
-position:relative;
-height:1vh;
-`
+  position: relative;
+`;
+
 const rotate = keyframes`
   from {
     transform: rotate(0deg);
@@ -24,20 +24,19 @@ const FormContainer = styled.form`
   background-color: #cedfd9;
   border-radius: 1vh;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  width: 80vw;
-  height: 55vh;
-  margin-left: 10vw;
+  margin-left: 25vw;
   margin-top: 2vh;
-  display: flex;
+width:50vw;
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 2vh;
-  overflow-y: auto; /* Permet le défilement vertical si nécessaire */
+  overflow-y: auto;
 
   @media (max-width: 500px) {
     display: block;
-    width: fit-content;
-    height: auto;
+        width: 90vw;
+        margin-left: 5vw;
+        height: auto;
   }
 `;
 
@@ -50,9 +49,9 @@ const ImageContainer = styled.div`
 const Image = styled.img`
   width: 5%;
   animation: ${rotate} 5s linear infinite;
-     @media (max-width: 500px) {
-    width: 15%;
 
+  @media (max-width: 500px) {
+    width: 15%;
   }
 `;
 
@@ -62,9 +61,6 @@ const Column = styled.div`
 
 const StyledContainer = styled.div`
   margin-bottom: 2vh;
-   @media (max-width: 500px) {
-    display:grid;
-  }
 `;
 
 const StyledInput = styled.input`
@@ -78,7 +74,7 @@ const StyledInput = styled.input`
 
   @media (max-width: 500px) {
     margin: 0;
-    font-size:6vw;
+    font-size: 6vw;
   }
 `;
 
@@ -87,10 +83,10 @@ const StyledTitle = styled.h1`
   color: black;
   font-size: 1.5vw;
   text-align: center;
-   @media (max-width: 500px) {
-     font-size: 5vw;
-             margin-bottom: 1vh;
 
+  @media (max-width: 500px) {
+    font-size: 5vw;
+    margin-bottom: 1vh;
   }
 `;
 
@@ -165,96 +161,131 @@ function VinyleForm({ onSaveAndRedirect, onDelete, editData }) {
   };
 
   return (
-    <>
     <Container>
       <ImageContainer>
-        <Title>Création d'un Vinyle</Title>
+        <Title>Vinyl Creation</Title>
         <Image src={CD} />
       </ImageContainer>
       <FormContainer onSubmit={handleSave}>
-        <Column>
-          <StyledContainer>
-            <StyledTitle>Artist Name</StyledTitle>
-            <StyledInput
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Artist Name</span>
+            </div>
+            <input
               type="text"
-              name="artistName"
+              class="form-control"
+              placeholder=""
+              aria-label="Username"
+              aria-describedby="basic-addon1"
               value={artistName}
               onChange={(e) => setArtistName(e.target.value)}
-              placeholder={editData?.artistName || 'Enter artist name'}
             />
-          </StyledContainer>
-          <StyledContainer>
-            <StyledTitle>Label</StyledTitle>
-            <StyledInput
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Album Title</span>
+            </div>
+            <input
               type="text"
-              name="label"
-              value={label}
-              onChange={(e) => setLabel(e.target.value)}
-              placeholder={editData?.label || 'Enter label'}
-            />
-          </StyledContainer>
-          <StyledContainer>
-            <StyledTitle>Number of Vinyls</StyledTitle>
-            <StyledInput
-              type="text"
-              name="numberOfVinyls"
-              value={numberOfVinyls}
-              onChange={(e) => setNumberOfVinyls(e.target.value)}
-              placeholder={editData?.numberOfVinyls || 'Enter number of vinyls'}
-            />
-          </StyledContainer>
-        </Column>
-        <Column>
-          <StyledContainer>
-            <StyledTitle>Album Title</StyledTitle>
-            <StyledInput
-              type="text"
-              name="albumTitle"
+              class="form-control"
+              placeholder=""
+              aria-label="Username"
+              aria-describedby="basic-addon1"
               value={albumTitle}
               onChange={(e) => setAlbumTitle(e.target.value)}
-              placeholder={editData?.albumTitle || 'Enter album title'}
             />
-          </StyledContainer>
-          <StyledContainer>
-            <StyledTitle>Release Date</StyledTitle>
-            <StyledInput
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Label</span>
+            </div>
+            <input
               type="text"
-              name="releaseDate"
+              class="form-control"
+              placeholder=""
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+              value={label}
+              onChange={(e) => setLabel(e.target.value)}
+            />
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Release Date</span>
+            </div>
+            <input
+              type="text"
+              class="form-control"
+              placeholder=""
+              aria-label="Username"
+              aria-describedby="basic-addon1"
               value={releaseDate}
               onChange={(e) => setReleaseDate(e.target.value)}
-              placeholder={editData?.releaseDate || 'Enter release date'}
             />
-          </StyledContainer>
-          <StyledContainer>
-            <StyledTitle>Category</StyledTitle>
-            <StyledInput
+          </div>
+
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Number of Vinyls</span>
+            </div>
+            <input
               type="text"
-              name="category"
+              class="form-control"
+              placeholder=""
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+              value={numberOfVinyls}
+              onChange={(e) => setNumberOfVinyls(e.target.value)}
+            />
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" htmlFor="inputGroupSelect01">Category</label>
+            </div>
+            <select
+              class="custom-select"
+              id="inputGroupSelect01"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              placeholder={editData?.category || 'Enter category'}
-            />
-          </StyledContainer>
-          <StyledContainer>
-            <StyledTitle>Vinyl Condition</StyledTitle>
-            <StyledInput
-              type="text"
-              name="vinylCondition"
+            >
+              <option selected>Choose...</option>
+              <option value="jazz">Jazz</option>
+              <option value="hip-hop">Hip-Hop</option>
+              <option value="pop">Pop</option>
+            </select>
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" htmlFor="inputGroupSelect02">Vinyl Condition</label>
+            </div>
+            <select
+              class="custom-select"
+              id="inputGroupSelect02"
               value={vinylCondition}
               onChange={(e) => setVinylCondition(e.target.value)}
-              placeholder={editData?.vinylCondition || 'Enter vinyl condition'}
-            />
-          </StyledContainer>
-        </Column>
+            >
+              <option selected>Choose...</option>
+              <option value="new">New</option>
+              <option value="used">Used</option>
+              <option value="worn">Worn</option>
+            </select>
+          </div>
       </FormContainer>
+
       <ButtonContainer>
         <SaveButton type="submit" onClick={handleSave}>Save your Vinyl</SaveButton>
         {editData && (
           <DeleteButton type="button" onClick={onDelete}>Delete your Vinyl</DeleteButton>
         )}
       </ButtonContainer>
-      </Container>
-    </>
+    </Container>
   );
 }
 
