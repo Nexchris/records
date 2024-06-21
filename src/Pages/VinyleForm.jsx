@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import CD from '../asset/cd.png';
 
+const Container = styled.div`
+position:relative;
+height:1vh;
+`
 const rotate = keyframes`
   from {
     transform: rotate(0deg);
@@ -162,6 +166,7 @@ function VinyleForm({ onSaveAndRedirect, onDelete, editData }) {
 
   return (
     <>
+    <Container>
       <ImageContainer>
         <Title>Création d'un Vinyle</Title>
         <Image src={CD} />
@@ -248,6 +253,7 @@ function VinyleForm({ onSaveAndRedirect, onDelete, editData }) {
           <DeleteButton type="button" onClick={onDelete}>Delete your Vinyl</DeleteButton>
         )}
       </ButtonContainer>
+      </Container>
     </>
   );
 }

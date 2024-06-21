@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
 .App {
   background-color: white;
+  font-family: "Poppins", sans-serif;
 }
 
 .App-logo {
@@ -7,14 +10,16 @@
   pointer-events: none;
 }
 
+/* App.css */
+
 body{
   margin:0;
   overflow: hidden; /* Empêche le défilement de la page si nécessaire */
   background: #000; /* Fallback background color */
-  background-image: url(./asset/background.mp4); /* Chemin vers votre vidéo */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  font-family: "Poppins", sans-serif;
 }
 
 @media (prefers-reduced-motion: no-preference) {
