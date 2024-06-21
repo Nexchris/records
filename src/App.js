@@ -1,24 +1,22 @@
 import logo from './logo.svg';
 import './App.css';
+import Collection from './Pages/CollectionScreen'
+import VinyleForm from './Pages/VinyleForm'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './asset/Header'
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <Header />
+       <Router> {/* Encadrez votre application avec le composant Router */}
+          <Routes> {/* Encadrez vos routes avec le composant Routes */}
+            <Route exact path="/" element={<Collection />} /> {/* Route par défaut vers Home */}
+            <Route path="/form" element={<VinyleForm />} /> {/* Route vers Offer */}
+          </Routes>
+      </Router>
+   </div>
   );
 }
 

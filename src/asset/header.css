@@ -1,0 +1,26 @@
+/* Header.css */
+@media (min-width: 992px) {
+    .navbar-desktop {
+        background-color: #CEDFD9 !important;
+    }
+    .brand-desktop {
+        font-weight: 600 !important;
+        font-size: 1.5vw !important;
+        margin-left: 1vw !important;
+        margin-right: 11vw !important;
+    }
+    .link-desktop {
+        color: black !important;
+        font-size: 1.5vw !important;
+        transition: opacity 0.3s ease;  /* Ajout de la transition */
+    }
+    .link-desktop:hover {
+        opacity: 0.6 !important;  /* Opacité en hover */
+    }
+    .link-collection {
+        margin-right: 10vw !important;
+    }
+    .link-category {
+        margin-right: 45vw !important;
+    }
+}

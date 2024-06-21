@@ -1,10 +1,20 @@
 .App {
-  text-align: center;
+  background-color: white;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+body{
+  margin:0;
+  overflow: hidden; /* Empêche le défilement de la page si nécessaire */
+  background: #000; /* Fallback background color */
+  background-image: url(./asset/background.mp4); /* Chemin vers votre vidéo */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 @media (prefers-reduced-motion: no-preference) {
