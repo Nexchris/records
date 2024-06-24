@@ -57,45 +57,17 @@ const Image = styled.img`
   }
 `;
 
-const Column = styled.div`
-  width: 48%;
-`;
 
-const StyledContainer = styled.div`
-  margin-bottom: 2vh;
-`;
 
-const StyledInput = styled.input`
-  border: none;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  font-size: 1.5vw;
-  text-align: center;
-  border-radius: 1vw;
-  margin-left: 10vw;
-  margin-top: 2vh;
 
-  @media (max-width: 500px) {
-    margin: 0;
-    font-size: 6vw;
-  }
-`;
-
-const StyledTitle = styled.h1`
-  margin: 0;
-  color: black;
-  font-size: 1.5vw;
-  text-align: center;
-
-  @media (max-width: 500px) {
-    font-size: 5vw;
-    margin-bottom: 1vh;
-  }
-`;
 
 const ButtonContainer = styled.div`
   display: flex;
   margin-top: 2vh;
   justify-content: space-around;
+    @media (max-width: 500px) {
+  flex-direction: column-reverse;
+  }
 `;
 
 function VinyleForm({ onSaveAndRedirect, onDelete, editData }) {
@@ -266,7 +238,6 @@ function VinyleForm({ onSaveAndRedirect, onDelete, editData }) {
           >
             <option defaultValue>Choose...</option>
             <option value="Jazz">Jazz</option>
-            <option value="Hip-Hop">Hip-Hop</option>
             <option value="Pop">Pop</option>
             <option value="Rock">Rock</option>
           </select>
@@ -301,7 +272,7 @@ function VinyleForm({ onSaveAndRedirect, onDelete, editData }) {
             Delete your Vinyl
           </button>
         )}
-        <Link to="/" className="btn btn-secondary btn-lg">
+        <Link to="/" className="btn btn-secondary btn-lg" onClick={() => window.location.reload()}>
           Back to Collection
         </Link>
       </ButtonContainer>

@@ -85,6 +85,7 @@ function CategoryScreen() {
   const [loading, setLoading] = useState(true); // State pour indiquer le chargement des données
   const [hasError, setHasError] = useState(false); // State pour indiquer une erreur de connexion
   const [selectedCategory, setSelectedCategory] = useState(''); // State pour la catégorie sélectionnée
+  const [editing, setEditing] = useState(false); // State pour indiquer si l'édition est activée
 
   useEffect(() => {
     axios.get('http://localhost:8000/api/vinyles')
@@ -116,6 +117,7 @@ function CategoryScreen() {
           setVinyleDataList(vinyleDataList.map(vinyle => vinyle.id === editData.id ? response.data : vinyle));
           setShowVinyleForm(false);
           setEditData(null);
+          setEditing(false); // Désactiver l'édition après sauvegarde
         })
         .catch(error => {
           console.error('There was an error updating the vinyl data!', error);
@@ -135,6 +137,7 @@ function CategoryScreen() {
   const handleEdit = (vinyle) => {
     setEditData(vinyle);
     setShowVinyleForm(true);
+        setEditing(true); // Activer l'édition
   };
 
   const handleDelete = (vinyleToDelete) => {
@@ -143,6 +146,7 @@ function CategoryScreen() {
         setVinyleDataList(vinyleDataList.filter(vinyle => vinyle.id !== vinyleToDelete.id));
         setShowVinyleForm(false);
         setEditData(null);
+        setEditing(false); // Désactiver l'édition après suppression
       })
       .catch(error => {
         console.error('There was an error deleting the vinyl data!', error);
@@ -155,21 +159,31 @@ function CategoryScreen() {
 
   // Fonction pour créer les VinyleFormContainer à partir des données
   const renderVinyleContainers = () => {
-    return vinyleDataList
-      .filter(vinyle => selectedCategory === '' || vinyle.category === selectedCategory)
-      .map(vinyle => (
+    if (!editing) {
+      return vinyleDataList.map((vinyle) => (
         <VinyleFormContainer key={vinyle.id}>
           <Vinyleflex>
-            <VinyleTitle>{vinyle.artistName} - {vinyle.albumTitle} ({new Date(vinyle.releaseDate).toLocaleDateString()})</VinyleTitle>
-            <button type="button" className="btn btn-primary btn-lg" onClick={() => handleEdit(vinyle)}>Edit</button>
+            <VinyleTitle>
+              {vinyle.artistName} - {vinyle.albumTitle} ({new Date(vinyle.releaseDate).toLocaleDateString()})
+            </VinyleTitle>
+            <button type="button" className="btn btn-primary btn-lg" onClick={() => handleEdit(vinyle)}>
+              Edit
+            </button>
           </Vinyleflex>
-          <VinyleInfo>{vinyle.label} - {new Date(vinyle.releaseDate).toLocaleDateString()}</VinyleInfo>
+          <VinyleInfo>
+            {vinyle.label} - {new Date(vinyle.releaseDate).toLocaleDateString()}
+          </VinyleInfo>
           <Vinyleflex>
-            <VinyleInfo>{vinyle.numberOfVinyls}, {vinyle.vinylCondition}</VinyleInfo>
+            <VinyleInfo>
+              {vinyle.numberOfVinyls}, {vinyle.vinylCondition}
+            </VinyleInfo>
             <VinyleInfo>{vinyle.category}</VinyleInfo>
           </Vinyleflex>
         </VinyleFormContainer>
       ));
+    } else {
+      return null; // Ne rien rendre si l'édition est active
+    }
   };
 
   // Afficher un message si aucune donnée de vinyle n'est disponible
@@ -242,9 +256,8 @@ function CategoryScreen() {
               <option value="" disabled selected>Category</option>
               <option value="">All</option>
               <option value="Jazz">Jazz</option>
-              <option value="Rap">Rap</option>
-              <option value="Hip-Hop">Hip-Hop</option>
               <option value="Pop">Pop</option>
+              <option value="Rock">Rock</option>
             </select>
           )}
           {!showVinyleForm && (

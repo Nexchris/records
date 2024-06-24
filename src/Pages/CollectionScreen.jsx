@@ -54,15 +54,31 @@ const VinyleInfo = styled.h2`
   }
 `;
 
+const Loadercontainer = styled.div`
+  background-color: rgba(255, 255, 255, 0.5); /* 0.5 représente l'opacité */
+  border-radius: 10vw;
+  margin-left: 25vw;
+  width: 50vw;
+  @media (max-width: 500px) {
+    width: 75vw;
+    margin-left: 13vw;
+  }
+`;
+
 const Loader = styled.div`
   position: relative;
   text-align: center;
   margin-top: 35vh;
+  @media (max-width: 500px) {
+    margin-top: 35vh;
+  }
 `;
 
 const Loadertext = styled.div`
   font-size: 2.5vw;
   margin-bottom: 2vh;
+  padding-top: 3vh;
+  color: black;
   font-weight: 600;
   @media (max-width: 500px) {
     font-size: x-large;
@@ -80,6 +96,7 @@ function CollectionScreen() {
   const [sqliteFound, setSqliteFound] = useState(false); // State pour vérifier si SQLite est trouvé
   const [loading, setLoading] = useState(true); // State pour indiquer le chargement des données
   const [hasError, setHasError] = useState(false); // State pour indiquer une erreur de connexion
+  const [editing, setEditing] = useState(false); // State pour indiquer si l'édition est activée
 
   useEffect(() => {
     axios
@@ -115,6 +132,7 @@ function CollectionScreen() {
           );
           setShowVinyleForm(false);
           setEditData(null);
+          setEditing(false); // Désactiver l'édition après sauvegarde
         })
         .catch((error) => {
           console.error('There was an error updating the vinyl data!', error);
@@ -136,6 +154,7 @@ function CollectionScreen() {
   const handleEdit = (vinyle) => {
     setEditData(vinyle);
     setShowVinyleForm(true);
+    setEditing(true); // Activer l'édition
   };
 
   const handleDelete = (vinyleToDelete) => {
@@ -145,6 +164,7 @@ function CollectionScreen() {
         setVinyleDataList((vinyles) => vinyles.filter((vinyle) => vinyle.id !== vinyleToDelete.id));
         setShowVinyleForm(false);
         setEditData(null);
+        setEditing(false); // Désactiver l'édition après suppression
       })
       .catch((error) => {
         console.error('There was an error deleting the vinyl data!', error);
@@ -152,84 +172,92 @@ function CollectionScreen() {
   };
 
   const renderVinyleContainers = () => {
-    return vinyleDataList.map((vinyle) => (
-      <VinyleFormContainer key={vinyle.id}>
-        <Vinyleflex>
-          <VinyleTitle>
-            {vinyle.artistName} - {vinyle.albumTitle} ({new Date(vinyle.releaseDate).toLocaleDateString()})
-          </VinyleTitle>
-          <button type="button" className="btn btn-primary btn-lg" onClick={() => handleEdit(vinyle)}>
-            Edit
-          </button>
-        </Vinyleflex>
-        <VinyleInfo>
-          {vinyle.label} - {new Date(vinyle.releaseDate).toLocaleDateString()}
-        </VinyleInfo>
-        <Vinyleflex>
+    if (!editing) {
+      return vinyleDataList.map((vinyle) => (
+        <VinyleFormContainer key={vinyle.id}>
+          <Vinyleflex>
+            <VinyleTitle>
+              {vinyle.artistName} - {vinyle.albumTitle} ({new Date(vinyle.releaseDate).toLocaleDateString()})
+            </VinyleTitle>
+            <button type="button" className="btn btn-primary btn-lg" onClick={() => handleEdit(vinyle)}>
+              Edit
+            </button>
+          </Vinyleflex>
           <VinyleInfo>
-            {vinyle.numberOfVinyls}, {vinyle.vinylCondition}
+            {vinyle.label} - {new Date(vinyle.releaseDate).toLocaleDateString()}
           </VinyleInfo>
-          <VinyleInfo>{vinyle.category}</VinyleInfo>
-        </Vinyleflex>
-      </VinyleFormContainer>
-    ));
+          <Vinyleflex>
+            <VinyleInfo>
+              {vinyle.numberOfVinyls}, {vinyle.vinylCondition}
+            </VinyleInfo>
+            <VinyleInfo>{vinyle.category}</VinyleInfo>
+          </Vinyleflex>
+        </VinyleFormContainer>
+      ));
+    } else {
+      return null; // Ne rien rendre si l'édition est active
+    }
   };
 
   if (loading) {
     return (
-      <Loader>
-        <Loadertext>Connecting to the network,</Loadertext>
-        <Loadertext> searching for vinyl records...</Loadertext>
-        <br />
-        <Loaderitem>
-          <div className="spinner-grow text-primary" role="status" id="rosy">
-            <span className="sr-only">Loading...</span>
-          </div>
-          <div className="spinner-grow text-primary" role="status" id="brown">
-            <span className="sr-only">Loading...</span>
-          </div>
-          <div className="spinner-grow text-primary" role="status" id="azure">
-            <span className="sr-only">Loading...</span>
-          </div>
-          <div className="spinner-grow text-primary" role="status" id="white">
-            <span className="sr-only">Loading...</span>
-          </div>
-          <div className="spinner-grow text-primary" role="status" id="yellow">
-            <span className="sr-only">Loading...</span>
-          </div>
-        </Loaderitem>
-      </Loader>
+      <Loadercontainer>
+        <Loader>
+          <Loadertext>Connecting to the network,</Loadertext>
+          <Loadertext> searching for vinyl records...</Loadertext>
+          <br />
+          <Loaderitem>
+            <div className="spinner-grow text-primary" role="status" id="rosy">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <div className="spinner-grow text-primary" role="status" id="brown">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <div className="spinner-grow text-primary" role="status" id="azure">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <div className="spinner-grow text-primary" role="status" id="white">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <div className="spinner-grow text-primary" role="status" id="yellow">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </Loaderitem>
+        </Loader>
+      </Loadercontainer>
     );
   }
 
   if (hasError) {
     return (
-      <Loader>
-        <Loadertext>Network connection failed.</Loadertext>
-        <Loaderitem>
-          <button type="button" className="btn btn-danger" id="failure-button" onClick={() => window.location.reload()}>
-            Restart
-          </button>
-        </Loaderitem>
-        <br />
-        <Loaderitem>
-          <div className="spinner-grow text-primary" id="red" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-          <div className="spinner-grow text-primary" id="red" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-          <div className="spinner-grow text-primary" id="red" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-          <div className="spinner-grow text-primary" id="red" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-          <div className="spinner-grow text-primary" id="red" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-        </Loaderitem>
-      </Loader>
+      <Loadercontainer>
+        <Loader>
+          <Loadertext>Network connection failed.</Loadertext>
+          <Loaderitem>
+            <button type="button" className="btn btn-danger" id="failure-button" onClick={() => window.location.reload()}>
+              Restart
+            </button>
+          </Loaderitem>
+          <br />
+          <Loaderitem>
+            <div className="spinner-grow text-primary" id="red" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <div className="spinner-grow text-primary" id="red" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <div className="spinner-grow text-primary" id="red" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <div className="spinner-grow text-primary" id="red" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <div className="spinner-grow text-primary" id="red" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </Loaderitem>
+        </Loader>
+      </Loadercontainer>
     );
   }
 

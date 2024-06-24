@@ -8,9 +8,11 @@ function Header() {
   const [username, setUsername] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/users') // Assurez-vous que l'URL est correcte
+    // Récupération des données de l'utilisateur à partir de l'API
+    axios.get('http://localhost:8000/api/users')
       .then(response => {
-        setUsername(response.data.username);
+        const userData = response.data[0]; // Prendre seulement le premier utilisateur
+        setUsername(userData.username);
       })
       .catch(error => {
         console.error('There was an error fetching the user data!', error);
@@ -25,12 +27,8 @@ function Header() {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <a href="#">
             <Nav.Link href="/" className="link-desktop link-collection">Collection</Nav.Link>
-          </a>
-          <a href="#">
             <Nav.Link href="/category" className="link-desktop link-category">Category</Nav.Link>
-          </a>
           <Nav.Link href="/user" className="link-desktop">{username || 'User'}</Nav.Link>
         </Nav>
       </Navbar.Collapse>
