@@ -21,6 +21,10 @@
         margin-right: 10vw !important;
     }
     .link-category {
-        margin-right: 45vw !important;
+        margin-right: 35vw !important;
     }
+}
+
+a{
+    text-decoration: none;
 }

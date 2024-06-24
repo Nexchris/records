@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import CD from '../asset/cd.png';
+import axios from 'axios';
+import { Link } from 'react-router-dom'; // Importer Link depuis react-router-dom
 
 const Container = styled.div`
   position: relative;
@@ -26,7 +28,7 @@ const FormContainer = styled.form`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   margin-left: 25vw;
   margin-top: 2vh;
-width:50vw;
+  width: 50vw;
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 2vh;
@@ -34,9 +36,9 @@ width:50vw;
 
   @media (max-width: 500px) {
     display: block;
-        width: 90vw;
-        margin-left: 5vw;
-        height: auto;
+    width: 90vw;
+    margin-left: 5vw;
+    height: auto;
   }
 `;
 
@@ -96,32 +98,6 @@ const ButtonContainer = styled.div`
   justify-content: space-around;
 `;
 
-const SaveButton = styled.button`
-  border-radius: 1vh;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  background-color: green;
-  border: none;
-  color: white;
-  font-size: xx-large;
-
-  &:hover {
-    opacity: 0.8;
-  }
-`;
-
-const DeleteButton = styled.button`
-  border-radius: 1vh;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  background-color: red;
-  border: none;
-  font-size: xx-large;
-  color: white;
-
-  &:hover {
-    opacity: 0.8;
-  }
-`;
-
 function VinyleForm({ onSaveAndRedirect, onDelete, editData }) {
   const [artistName, setArtistName] = useState('');
   const [label, setLabel] = useState('');
@@ -157,7 +133,29 @@ function VinyleForm({ onSaveAndRedirect, onDelete, editData }) {
     };
     console.log('Form Data:', formData);
 
-    onSaveAndRedirect(formData);
+    if (editData) {
+      axios
+        .put(`http://localhost:8000/api/vinyles/${editData.id}`, formData)
+        .then((response) => {
+          onSaveAndRedirect(response.data);
+          window.location.href = '/'; // Redirection vers la page d'accueil après sauvegarde
+        })
+        .catch((error) => {
+          console.error('There was an error updating the vinyl data!', error);
+        });
+    } else {
+      axios
+        .post('http://localhost:8000/api/vinyles', formData)
+        .then((response) => {
+          onSaveAndRedirect(response.data);
+          window.location.href = '/'; // Redirection vers la page d'accueil après sauvegarde
+        })
+        .catch((error) => {
+          // console.error('There was an error saving the vinyl data!', error);
+          // console.error('Error Details:', error);
+          window.location.href = '/'; // Redirection vers la page d'accueil après sauvegarde
+        });
+    }
   };
 
   return (
@@ -167,123 +165,145 @@ function VinyleForm({ onSaveAndRedirect, onDelete, editData }) {
         <Image src={CD} />
       </ImageContainer>
       <FormContainer onSubmit={handleSave}>
-
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon1">Artist Name</span>
-            </div>
-            <input
-              type="text"
-              class="form-control"
-              placeholder=""
-              aria-label="Username"
-              aria-describedby="basic-addon1"
-              value={artistName}
-              onChange={(e) => setArtistName(e.target.value)}
-            />
+        <div className="input-group mb-3">
+          <div className="input-group-prepend">
+            <span className="input-group-text" id="basic-addon1">
+              Artist Name
+            </span>
           </div>
+          <input
+            type="text"
+            className="form-control"
+            placeholder=""
+            aria-label="Username"
+            aria-describedby="basic-addon1"
+            value={artistName}
+            onChange={(e) => setArtistName(e.target.value)}
+          />
+        </div>
 
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon1">Album Title</span>
-            </div>
-            <input
-              type="text"
-              class="form-control"
-              placeholder=""
-              aria-label="Username"
-              aria-describedby="basic-addon1"
-              value={albumTitle}
-              onChange={(e) => setAlbumTitle(e.target.value)}
-            />
+        <div className="input-group mb-3">
+          <div className="input-group-prepend">
+            <span className="input-group-text" id="basic-addon1">
+              Album Title
+            </span>
           </div>
+          <input
+            type="text"
+            className="form-control"
+            placeholder=""
+            aria-label="Username"
+            aria-describedby="basic-addon1"
+            value={albumTitle}
+            onChange={(e) => setAlbumTitle(e.target.value)}
+          />
+        </div>
 
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon1">Label</span>
-            </div>
-            <input
-              type="text"
-              class="form-control"
-              placeholder=""
-              aria-label="Username"
-              aria-describedby="basic-addon1"
-              value={label}
-              onChange={(e) => setLabel(e.target.value)}
-            />
+        <div className="input-group mb-3">
+          <div className="input-group-prepend">
+            <span className="input-group-text" id="basic-addon1">
+              Label
+            </span>
           </div>
+          <input
+            type="text"
+            className="form-control"
+            placeholder=""
+            aria-label="Username"
+            aria-describedby="basic-addon1"
+            value={label}
+            onChange={(e) => setLabel(e.target.value)}
+          />
+        </div>
 
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon1">Release Date</span>
-            </div>
-            <input
-              type="text"
-              class="form-control"
-              placeholder=""
-              aria-label="Username"
-              aria-describedby="basic-addon1"
-              value={releaseDate}
-              onChange={(e) => setReleaseDate(e.target.value)}
-            />
+        <div className="input-group mb-3">
+          <div className="input-group-prepend">
+            <span className="input-group-text" id="basic-addon1">
+              Release Date
+            </span>
           </div>
+          <input
+            type="date"
+            className="form-control"
+            placeholder=""
+            aria-label="Release Date"
+            value={releaseDate}
+            onChange={(e) => setReleaseDate(e.target.value)}
+          />
+        </div>
 
-
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon1">Number of Vinyls</span>
-            </div>
-            <input
-              type="text"
-              class="form-control"
-              placeholder=""
-              aria-label="Username"
-              aria-describedby="basic-addon1"
-              value={numberOfVinyls}
-              onChange={(e) => setNumberOfVinyls(e.target.value)}
-            />
+        <div className="input-group mb-3">
+          <div className="input-group-prepend">
+            <label className="input-group-text" htmlFor="inputGroupSelect01">
+              Number of Vinyls
+            </label>
           </div>
+          <select
+            className="custom-select"
+            id="inputGroupSelect01"
+            value={numberOfVinyls}
+            onChange={(e) => setNumberOfVinyls(e.target.value)}
+          >
+            <option defaultValue>Choose...</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+        </div>
 
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <label class="input-group-text" htmlFor="inputGroupSelect01">Category</label>
-            </div>
-            <select
-              class="custom-select"
-              id="inputGroupSelect01"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            >
-              <option selected>Choose...</option>
-              <option value="jazz">Jazz</option>
-              <option value="hip-hop">Hip-Hop</option>
-              <option value="pop">Pop</option>
-            </select>
+        <div className="input-group mb-3">
+          <div className="input-group-prepend">
+            <label className="input-group-text" htmlFor="inputGroupSelect01">
+              Category
+            </label>
           </div>
+          <select
+            className="custom-select"
+            id="inputGroupSelect01"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option defaultValue>Choose...</option>
+            <option value="Jazz">Jazz</option>
+            <option value="Hip-Hop">Hip-Hop</option>
+            <option value="Pop">Pop</option>
+            <option value="Rock">Rock</option>
+          </select>
+        </div>
 
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <label class="input-group-text" htmlFor="inputGroupSelect02">Vinyl Condition</label>
-            </div>
-            <select
-              class="custom-select"
-              id="inputGroupSelect02"
-              value={vinylCondition}
-              onChange={(e) => setVinylCondition(e.target.value)}
-            >
-              <option selected>Choose...</option>
-              <option value="new">New</option>
-              <option value="used">Used</option>
-              <option value="worn">Worn</option>
-            </select>
+        <div className="input-group mb-3">
+          <div className="input-group-prepend">
+            <label className="input-group-text" htmlFor="inputGroupSelect02">
+              Vinyl Condition
+            </label>
           </div>
+          <select
+            className="custom-select"
+            id="inputGroupSelect02"
+            value={vinylCondition}
+            onChange={(e) => setVinylCondition(e.target.value)}
+          >
+            <option defaultValue>Choose...</option>
+            <option value="New">New</option>
+            <option value="Used">Used</option>
+            <option value="Worn">Worn</option>
+          </select>
+        </div>
       </FormContainer>
 
       <ButtonContainer>
-        <SaveButton type="submit" onClick={handleSave}>Save your Vinyl</SaveButton>
+        <button type="submit" className="btn btn-primary btn-lg" onClick={handleSave}>
+          Save your Vinyl
+        </button>
         {editData && (
-          <DeleteButton type="button" onClick={onDelete}>Delete your Vinyl</DeleteButton>
+          <button type="submit" className="btn btn-primary btn-lg" style={{ backgroundColor: 'red' }} onClick={onDelete}>
+            Delete your Vinyl
+          </button>
         )}
+        <Link to="/" className="btn btn-secondary btn-lg">
+          Back to Collection
+        </Link>
       </ButtonContainer>
     </Container>
   );
