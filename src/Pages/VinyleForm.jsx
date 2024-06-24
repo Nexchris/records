@@ -271,7 +271,9 @@ function VinyleForm({ onSaveAndRedirect, onDelete, editData }) {
           <button type="submit" className="btn btn-primary btn-lg" style={{ backgroundColor: 'red' }} onClick={onDelete}>
             Delete your Vinyl
           </button>
+          
         )}
+       
         <Link to="/" className="btn btn-secondary btn-lg" onClick={() => window.location.reload()}>
           Back to Collection
         </Link>
